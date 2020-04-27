@@ -6,6 +6,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import controls.Keyboard;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1922430375395542294L;
@@ -21,9 +23,13 @@ public class Game extends Canvas implements Runnable {
 
 	private static JFrame window;
 	private static Thread thread;
+	private static Keyboard keyboard;
 
 	private Game() {
 		setPreferredSize(new Dimension(WIDTH, HEIGTH));
+
+		keyboard = new Keyboard();
+		addKeyListener(keyboard);
 
 		window = new JFrame(NAME);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,6 +63,21 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void update() {
+		keyboard.update();
+
+		if (keyboard.up) {
+			System.out.println("ARRIBA");
+		}
+		if (keyboard.down) {
+			System.out.println("ABAJO");
+		}
+		if (keyboard.left) {
+			System.out.println("IZQUIERDA");
+		}
+		if (keyboard.right) {
+			System.out.println("DERECHA");
+		}
+
 		aps++;
 	}
 
@@ -76,6 +97,8 @@ public class Game extends Canvas implements Runnable {
 
 		double elapsedTime;
 		double delta = 0;// Cantidad de tiempo transcurrido en una actualizacón.
+
+		requestFocus();
 
 		while (isRunning) {
 			final long bucleStart = System.nanoTime();
